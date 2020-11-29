@@ -45,7 +45,7 @@ float synchrony(float Array[],int N,int size_spike){
     float tau2[size_spike]=    {0.0};
     float mean_tau=0.0;
     float mean_tau2=0.0;
-    for (int i=2 ; i<=size_spike;i++){
+    for (int i=4 ; i<=size_spike+2;i++){
         tau[i]=dif(Array,i);
         tau2[i]=tau[i]*tau[i];
         mean_tau=mean_tau+tau[i];
@@ -70,23 +70,30 @@ float *fillarr( float arr[] ) {
 //####              Convert file to array                   ####
 //####                                                      ####
 //##############################################################
-float *readfile(int neurun) {
+float *readfile(float Phi , float i_app) {
 //_______________________________________________
 //___________________Read file___________________
 //_______________________________________________
 	std::string s;
 	std::stringstream ss;
-	ss << neurun;
+    std::string s1;
+	std::stringstream ss1;
+	ss << Phi;
 	ss >> s;
-    std::string scheme ("spike");
+	ss1 << i_app;
+	ss1 >> s1;
+
+
+    std::string scheme ("C:/Users/Ali/Desktop/MATLAB/DATA/spike_");
     std::string hostname;
     std::string url;
-    hostname = s+".txt" ;
+    hostname = s+"_"+s1+".txt" ;
     url = scheme + hostname;
     char* char_arr;
     string str_obj(url);
     char_arr = &str_obj[0];
     char * filename = char_arr;
+    //cout<<filename<<endl;
 //_______________________________________________
 //__________Calculation of Size Spike____________
 //_______________________________________________
@@ -105,17 +112,41 @@ float *readfile(int neurun) {
     string mynumb;
     int numb;
     myfile1 >> mynumb;
-    stringstream geek(mynumb);
-    geek >> numb;
+    stringstream geek2(mynumb);
+    geek2 >> numb;
     //cout<<numb<<endl;
+
+ //_______________________________________________
+//______Calculation of number of neurons_________
+//_______________________________________________
+
+    string myphi;
+    int phi;
+    myfile1 >> myphi;
+    stringstream geek3(myphi);
+    geek3 >> phi;
+    //cout<<numb<<endl;
+    //_______________________________________________
+//______Calculation of number of neurons_________
+//_______________________________________________
+
+    string myiapp;
+    float iapp;
+    myfile1 >> myiapp;
+    stringstream geek4(myiapp);
+    geek4 >> iapp;
+    //cout<<iapp<<endl;
+
 //_______________________________________________
 //___________Convert File to Array_______________
 //_______________________________________________
-    string myArray[size_spike+2];
-    float Array[size_spike+2];
+    string myArray[size_spike+4];
+    float Array[size_spike+4];
     Array[0]=size_spike;
     Array[1]=numb;
-    for(int i = 2; i < size_spike+2; ++i){
+    Array[2]=phi;
+    Array[3]=iapp;
+    for(int i = 4; i < size_spike+4; ++i){
         myfile1 >> myArray[i];
         stringstream geek(myArray[i]);
         geek >> Array[i];
@@ -139,8 +170,10 @@ float *readfile(int neurun) {
 //_____________           @         @  @         @   @   @     @@           _____________\\
 //_______________________________________________________________________________________
 int main (){
-    int a=1;
-    cout<<synchrony(readfile(a),readfile(a)[1],readfile(a)[0]);
+    float a=2;//phi
+    float b=3.5;//i_app
+    cout<<synchrony(readfile(a,b),readfile(a,b)[1],readfile(a,b)[0])<<endl;
     return 0;
 }
+
 
