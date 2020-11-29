@@ -28,8 +28,7 @@ float dif(float t[],int i)
 //####                Sync calculation                      ####
 //####                                                      ####
 //##############################################################
-float isi(float mean_tau,float mean_tau2,int N)
-{
+float isi(float mean_tau,float mean_tau2,int N){
     float B ;
     float mean2_tau=pow(mean_tau,2);
     B=((((pow((mean_tau2-mean2_tau),0.5))/(mean_tau)))-1)/(1/pow(N,0.5));
@@ -40,14 +39,13 @@ float isi(float mean_tau,float mean_tau2,int N)
 //####          Calculation of mean and variance            ####
 //####                                                      ####
 //##############################################################
-float synchrony(float Array[],int N,int size_spike)
-{
+float synchrony(float Array[],int N,int size_spike){
     float x;
     float tau[size_spike]=    {0.0};
     float tau2[size_spike]=    {0.0};
     float mean_tau=0.0;
     float mean_tau2=0.0;
-    for (int i=1 ; i<=size_spike-1;i++){
+    for (int i=2 ; i<=size_spike;i++){
         tau[i]=dif(Array,i);
         tau2[i]=tau[i]*tau[i];
         mean_tau=mean_tau+tau[i];
@@ -100,13 +98,24 @@ float *readfile(int neurun) {
     stringstream geek1(size1);
     int size_spike = 0;
     geek1 >> size_spike;
+
+//_______________________________________________
+//______Calculation of number of neurons_________
+//_______________________________________________
+    string mynumb;
+    int numb;
+    myfile1 >> mynumb;
+    stringstream geek(mynumb);
+    geek >> numb;
+    //cout<<numb<<endl;
 //_______________________________________________
 //___________Convert File to Array_______________
 //_______________________________________________
-    string myArray[size_spike+1];
-    float Array[size_spike+1];
+    string myArray[size_spike+2];
+    float Array[size_spike+2];
     Array[0]=size_spike;
-    for(int i = 1; i < size_spike+1; ++i){
+    Array[1]=numb;
+    for(int i = 2; i < size_spike+2; ++i){
         myfile1 >> myArray[i];
         stringstream geek(myArray[i]);
         geek >> Array[i];
@@ -119,7 +128,6 @@ float *readfile(int neurun) {
     float *nn = fillarr(Array);
     return   nn;
 }
-
 //_______________________________________________________________________________________\\
 //_____________                                                             _____________\\
 //_____________                                      @                      _____________\\
@@ -129,14 +137,10 @@ float *readfile(int neurun) {
 //_____________           @   @@@   @    @@@@@@@     @   @   @  @           _____________\\
 //_____________           @    @    @   @       @    @   @    @ @           _____________\\
 //_____________           @         @  @         @   @   @     @@           _____________\\
-//_______________________________________________________________________________________\\
-
-int main ()
-{
-
-    int N=3;
+//_______________________________________________________________________________________
+int main (){
     int a=1;
-    cout<<synchrony(readfile(a),N,readfile(a)[0]);
-
+    cout<<synchrony(readfile(a),readfile(a)[1],readfile(a)[0]);
     return 0;
 }
+
