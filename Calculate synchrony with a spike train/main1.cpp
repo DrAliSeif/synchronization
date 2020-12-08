@@ -31,7 +31,7 @@ float dif(float t[],int i)
 float isi(float mean_tau,float mean_tau2,int N){
     float B ;
     float mean2_tau=pow(mean_tau,2);
-    B=((((pow((mean_tau2-mean2_tau),0.5))/(mean_tau)))-1)/(1/pow(N,0.5));
+    B=((((pow((mean_tau2-mean2_tau),0.5))/(mean_tau)))-1)*(1/pow(N,0.5));
     return   B;
 }
 //##############################################################
